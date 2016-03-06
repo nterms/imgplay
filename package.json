@@ -1,0 +1,23 @@
+{
+    "name": "imgplay",
+    "version": "0.1.0",
+    "description": "Image sequence player with streaming and dynamic loading support.",
+    "keywords": [
+        "image",
+        "img",
+        "player",
+        "play",
+        "jQuery",
+        "plugin"
+    ],
+    "author": {
+        "name": "Saranga Abeykoon",
+        "email": "amisaranga@gmail.com",
+        "url": "http://nterms.com",
+    },
+    "bugs": {
+        "url": "https://github.com/nterms/imgplay/issues",
+    },
+    "readme": "ERROR: No README data found!",
+    "license": "MIT"
+}

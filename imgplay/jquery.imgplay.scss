@@ -1,0 +1,55 @@
+.imgplay {
+    background: #555;
+    height: 100%;
+    min-height: 240px;
+    position: relative;
+    padding-bottom: 32px;
+    width: 100%;
+    
+    img {
+        max-width: 100%;
+    }
+    
+    canvas {
+        left: 0;
+        position: absolute;
+        top: 0;
+    }
+    
+    .imgplay-controls {
+        background: rgba(0, 0, 0, 0.8);
+        bottom: 0;
+        height: 36px;
+        position: absolute;
+        width: 100%;
+        
+        .imgplay-progress, .imgplay-load-bar {
+            height: 4px;
+        }
+        
+        .imgplay-load-bar {
+            background: #AAA;
+            width: 0%;
+        }
+        
+        .imgplay-play-bar {
+            background: #FFF;
+            height: 4px;
+            width: 0%;
+        }
+        
+        .imgplay-button {
+            color: #AAA;
+            cursor: pointer;
+            display: inline-block;
+            height: 24px;
+            margin: 4px;
+            width: 24px;
+            
+            &:hover, &:focus {
+                background: rgba(100, 100, 100, 0.5);
+                color: #FFF;
+            }
+        }
+    }
+}
