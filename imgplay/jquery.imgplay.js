@@ -181,14 +181,14 @@
                 var nextFrame = $('<div class="imgplay-button imgplay-next-frame"><i class="material-icons">skip_next</i></div>');
                 var fullscreen = $('<div class="imgplay-button imgplay-fullscreen"><i class="material-icons">fullscreen</i></div>');
                 
-                play.on('click', function() { plugin.play(); })
-                pause.on('click', function() { plugin.pause(); })
-                stop.on('click', function() { plugin.stop(); })
+                play.on('click', function() { plugin.play(); });
+                pause.on('click', function() { plugin.pause(); });
+                stop.on('click', function() { plugin.stop(); });
                 //rewind.on('click', function() { plugin.rewind(); })
                 //forward.on('click', function() { plugin.forward(); })
-                previousFrame.on('click', function() { plugin.previousFrame(); })
-                nextFrame.on('click', function() { plugin.nextFrame(); })
-                fullscreen.on('click', function() { plugin.fullscreen(); })
+                previousFrame.on('click', function() { plugin.previousFrame(); });
+                nextFrame.on('click', function() { plugin.nextFrame(); });
+                fullscreen.on('click', function() { plugin.fullscreen(); });
                 
                 loadBar.append(playBar);
                 progress.append(loadBar);
@@ -208,7 +208,7 @@
                         var cw = $canvas.width();
                         var ch = $canvas.height();
                         var iw = img.width;
-                        var ih = img.height
+                        var ih = img.height;
                         var vw = 0;
                         var vh = 0;
                         
