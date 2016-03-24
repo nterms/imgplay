@@ -1,6 +1,6 @@
 {
   "name": "imgplay",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Image sequence player with streaming and dynamic loading support.",
   "keywords": [
     "image",
