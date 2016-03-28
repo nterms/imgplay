@@ -1,10 +1,10 @@
 {
   "name": "imgplay",
-  "homepage": "https://github.com/nterms/imgplay",
+  "homepage": "https://nterms.github.com/imgplay",
   "authors": [
     "Saranga Abeykoon <amisaranga@gmail.com>"
   ],
-  "description": "Image sequence player with streaming and dynamic loading support.",
+  "description": "Image sequence player jQuery plugin with streaming and dynamic loading support.",
   "main": "jquery.imgplay.js",
   "moduleType": [
     "es6"

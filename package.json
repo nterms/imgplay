@@ -1,6 +1,6 @@
 {
   "name": "imgplay",
-  "version": "0.3.0",
+  "version": "0.2.0",
   "description": "Image sequence player with streaming and dynamic loading support.",
   "keywords": [
     "image",
@@ -18,7 +18,6 @@
   "bugs": {
     "url": "https://github.com/nterms/imgplay/issues"
   },
-  "readme": "ERROR: No README data found!",
   "license": "MIT",
   "devDependencies": {
     "gulp": "^3.9.1",
