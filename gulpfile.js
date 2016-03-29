@@ -12,20 +12,20 @@ var rename = require('gulp-rename');
 gulp.task('default', ['sass', 'lint', 'uglify', 'watch']);
 
 gulp.task('sass', function() {
-    return gulp.src('./src/jquery.imgplay.scss')
+    return gulp.src('./src/screen.scss')
         .pipe(sass({outputStyle: (argv.production ? 'compressed' : 'nested')}).on('error', sass.logError))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./css'));
 });
 
 gulp.task('uglify', function() {
-    return gulp.src('./src/jquery.imgplay.js')
+    return gulp.src('./src/site.js')
         .pipe(gulpif(argv.production, uglify()))
         .pipe(gulpif(argv.production, rename({suffix: '.min'})))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./js'));
 });
 
 gulp.task('lint', function() {
-    return gulp.src('./src/jquery.imgplay.js')
+    return gulp.src('./src/site.js')
         .pipe(eslint({
             'rules': {
                 'quotes': [1, 'single'],
@@ -38,7 +38,7 @@ gulp.task('lint', function() {
 
 gulp.task('watch', function() {
     if(!argv.production) { 
-        gulp.watch('./src/jquery.imgplay.scss', ['sass']);
-        gulp.watch('./src/jquery.imgplay.js', ['lint']);
+        gulp.watch('./src/screen.scss', ['sass']);
+        gulp.watch('./src/site.js', ['lint']);
     }
 });
