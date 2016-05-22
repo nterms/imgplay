@@ -1,3 +1,8 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box; }
+
 body {
   background-color: #333;
   color: #fff;
@@ -23,6 +28,13 @@ section {
   max-width: 640px;
   padding-bottom: 32px;
   width: 640px; }
+
+/** PURE **/
+.pure-g {
+  margin: 0 -15px; }
+
+.pure-g [class*="pure-u"] {
+  padding: 0 15px; }
 
 /** CODE **/
 pre[class*="language-"] {

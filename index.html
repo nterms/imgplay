@@ -16,8 +16,11 @@
     <body>
         <div class="pure-g">
             <div class="pure-u-1">
-                <section>
+                <div class="top-nav fixed">
                     <h1>imgplay</h1>
+                </div>
+                
+                <section>
                     
                     <p>Image sequence player</p>
                     
@@ -53,9 +56,11 @@
                 <section>
                     <h2>Basic setup</h2>
                     
-                    <div class="code-block">
-                        <div class="code-label">HTML</div>
-                        <pre><code class="language-html">
+                    <div class="pure-g">
+                        <div class="pure-u-1-2">
+                            <div class="code-block">
+                                <div class="code-label">HTML</div>
+                                <pre><code class="language-html">
 &lt;div id="imageplayer" class="imageplayer"&gt;
     &lt;img src="image1.jpg" /&gt;
     &lt;img src="image2.jpg" /&gt;
@@ -68,14 +73,18 @@
     &lt;img data-src="image9.jpg" /&gt;
     &lt;img data-src="image10.jpg" /&gt;
 &lt;/div&gt;
-                        </code></pre>
-                    </div>
+                                </code></pre>
+                            </div>
+                        </div>
                     
-                    <div class="code-block">
-                        <div class="code-label">JavaScript</div>
-                        <pre><code class="language-javascript">
-$('#imageplayer').imgplay(); 
-                        </code></pre>
+                        <div class="pure-u-1-2">
+                            <div class="code-block">
+                                <div class="code-label">JavaScript</div>
+                                <pre><code class="language-javascript">
+    $('#imageplayer').imgplay(); 
+                                </code></pre>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>

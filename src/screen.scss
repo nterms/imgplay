@@ -1,3 +1,9 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
 body {
     background-color: #333;
     color: #fff;
@@ -29,6 +35,15 @@ section {
     width: 640px;
 }
 
+/** PURE **/
+
+.pure-g {
+    margin: 0 -15px;
+}
+
+.pure-g [class *="pure-u"] {
+    padding: 0 15px;
+}
 
 /** CODE **/
 
