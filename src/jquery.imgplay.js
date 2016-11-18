@@ -19,8 +19,22 @@
         var index = 0;
         var buffer = [];
         var playTimer = null;
+        var frameWidth;
+        var frameHeight;
 
         plugin.settings = {};
+
+        plugin.getTotalFrames = function() {
+            return total;
+        };
+
+        plugin.getFrameWidth = function() {
+            return frameWidth;
+        };
+
+        plugin.getFrameHeight = function() {
+            return frameHeight;
+        };
 
         plugin.controls = {
             play: null,
@@ -188,7 +202,7 @@
         plugin.toFrame = function(i) {
             i = i < 0 ? 0 : i;
 
-            if (i < buffer.length) {
+            if (plugin.frames[i]) {
                 index = i;
                 drawFrame();
             }
@@ -293,7 +307,7 @@
                 var img = plugin.frames[index];
                 var $img = $(img);
 
-                if(img) {
+                if (img) {
                     if($img.prop('naturalHeight') > 0) {
                         var cw = $canvas.width();
                         var ch = $canvas.height();
@@ -302,31 +316,33 @@
                         var vw = 0;
                         var vh = 0;
 
-                        if(cw >= ch) {
+                        if (cw >= ch) {
                             vw = iw * (ch/ih);
                             vh = ch;
                         } else {
                             vw = cw;
                             vh = ih * (cw/iw);
                         }
+                        frameWidth = vw;
+                        frameHeight = vh;
                         screen.clearRect(0, 0, cw, ch);
                         screen.drawImage(img, (cw - vw) / 2, (ch - vh) / 2, vw, vh);
                     }
-                } else if(buffer.length) {
+                } else if (buffer.length) {
                     plugin.pause();
                     loadMore();
                     return;
                 }
 
-                if(index < 0 || index > plugin.frames.length) {
+                if (index < 0 || index > plugin.frames.length) {
                     plugin.stop();
                     return;
                 }
 
-                if(playing) {
-                    if(direction == 'forward') {
+                if (playing) {
+                    if (direction == 'forward') {
                         index++;
-                        if(index > plugin.frames.length -  plugin.settings.pageSize / 2) {
+                        if (index > plugin.frames.length -  plugin.settings.pageSize / 2) {
                             loadMore();
                         }
                     } else {
@@ -341,22 +357,16 @@
         };
 
         var loadMore = function(fromIdx) {
-            if (fromIdx != undefined) {
-                buffer = [];
-                // we have jumpped forward, get a fresh buffer
-                for(var i = fromIdx; (i < plugin.settings.pageSize + fromIdx); i++) {
-                    loadFrame(i);
-                }
-            }
+            var loadFrom = fromIdx != undefined ? fromIdx : index;
             if (buffer.length) {
-                for(var i = index; (i < plugin.settings.pageSize + index && i < buffer.length); i++) {
+                for(var i = loadFrom; (i < plugin.settings.pageSize + loadFrom && i < buffer.length); i++) {
                     loadFrame(i);
                 }
             }
         };
 
         var loadFrame = function(i) {
-            if(i < buffer.length) {
+            if (i < buffer.length) {
                 var img = buffer[i];
                 var $img = $(img);
 
@@ -365,15 +375,15 @@
                         plugin.frames[i] = img;
                         //buffer.splice(buffer.indexOf(img), 1);
                         drawProgress();
-                        if(i == (index + plugin.settings.pageSize - 1) && direction == 'forward' && playing == false) {
-                            plugin.play();
-                        }
                     }).prop('src', $img.data('src'));
                 }
             }
         };
 
         var drawProgress = function() {
+            if (!plugin.settings.controls) {
+                return;
+            }
             var loadProgress = ((plugin.frames.length / total) * 100);
             var playProgress = ((index / plugin.frames.length) * 100);
 
