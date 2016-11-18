@@ -21,7 +21,7 @@
         var playTimer = null;
 
         plugin.settings = {};
-        
+
         plugin.controls = {
             play: null,
             pause: null,
@@ -63,16 +63,26 @@
             resize();
         };
 
+        plugin.isPlaying = function() {
+            return playing;
+        };
+
+        plugin.getCurrentFrame = function() {
+            return index;
+        };
+
         plugin.play = function() {
             playing = true;
             direction = 'forward';
             drawFrame();
 
-            plugin.controls.play.addClass('active');
-            plugin.controls.stop.removeClass('active');
-            plugin.controls.pause.removeClass('active');
-            plugin.controls.rewind.removeClass('active');
-            plugin.controls.forward.removeClass('active');
+            if (plugin.settings.controls) {
+                plugin.controls.play.addClass('active');
+                plugin.controls.stop.removeClass('active');
+                plugin.controls.pause.removeClass('active');
+                plugin.controls.rewind.removeClass('active');
+                plugin.controls.forward.removeClass('active');
+            }
         };
 
         plugin.pause = function() {
@@ -81,22 +91,26 @@
                 clearTimeout(playTimer);
             }
 
-            plugin.controls.pause.addClass('active');
-            plugin.controls.play.removeClass('active');
-            plugin.controls.stop.removeClass('active');
-            plugin.controls.rewind.removeClass('active');
-            plugin.controls.forward.removeClass('active');
+            if (plugin.settings.controls) {
+                plugin.controls.pause.addClass('active');
+                plugin.controls.play.removeClass('active');
+                plugin.controls.stop.removeClass('active');
+                plugin.controls.rewind.removeClass('active');
+                plugin.controls.forward.removeClass('active');
+            }
         };
 
         plugin.stop = function() {
             playing = false;
             index = 0;
 
-            plugin.controls.stop.addClass('active');
-            plugin.controls.play.removeClass('active');
-            plugin.controls.pause.removeClass('active');
-            plugin.controls.rewind.removeClass('active');
-            plugin.controls.forward.removeClass('active');
+            if (plugin.settings.controls) {
+                plugin.controls.stop.addClass('active');
+                plugin.controls.play.removeClass('active');
+                plugin.controls.pause.removeClass('active');
+                plugin.controls.rewind.removeClass('active');
+                plugin.controls.forward.removeClass('active');
+            }
         };
 
         plugin.rewind = function(frames) {
@@ -107,11 +121,13 @@
                 drawFrame();
             }
 
-            plugin.controls.rewind.addClass('active');
-            plugin.controls.forward.removeClass('active');
-            plugin.controls.stop.removeClass('active');
-            plugin.controls.play.removeClass('active');
-            plugin.controls.pause.removeClass('active');
+            if (plugin.settings.controls) {
+                plugin.controls.rewind.addClass('active');
+                plugin.controls.forward.removeClass('active');
+                plugin.controls.stop.removeClass('active');
+                plugin.controls.play.removeClass('active');
+                plugin.controls.pause.removeClass('active');
+            }
         };
 
         plugin.forward = function(frames) {
@@ -122,11 +138,13 @@
                 drawFrame();
             }
 
-            plugin.controls.forward.addClass('active');
-            plugin.controls.rewind.removeClass('active');
-            plugin.controls.stop.removeClass('active');
-            plugin.controls.play.removeClass('active');
-            plugin.controls.pause.removeClass('active');
+            if (plugin.settings.controls) {
+                plugin.controls.forward.addClass('active');
+                plugin.controls.rewind.removeClass('active');
+                plugin.controls.stop.removeClass('active');
+                plugin.controls.play.removeClass('active');
+                plugin.controls.pause.removeClass('active');
+            }
         };
 
         plugin.fastRewind = function(rate) {
@@ -188,7 +206,9 @@
                 } else if (el.webkitRequestFullscreen) {
                     el.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
                 }
-                plugin.controls.fullscreen.addClass('active');
+                if (plugin.settings.controls) {
+                    plugin.controls.fullscreen.addClass('active');
+                }
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
@@ -199,7 +219,9 @@
                 } else if (document.webkitExitFullscreen) {
                     document.webkitExitFullscreen();
                 }
-                plugin.controls.fullscreen.removeClass('active');
+                if (plugin.settings.controls) {
+                    plugin.controls.fullscreen.removeClass('active');
+                }
             }
 
             setTimeout(function() {
@@ -208,6 +230,9 @@
         };
 
         var initControls = function() {
+            if (!plugin.settings.controls) {
+                return;
+            }
             if($el.find('.imgplay-controls').length == 0) {
                 var controls = $('<div class="imgplay-controls"></div>');
                 var progress = $('<div class="imgplay-progress">');
