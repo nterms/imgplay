@@ -317,8 +317,9 @@
                         screen.drawImage(img, (cw - vw) / 2, (ch - vh) / 2, vw, vh);
                     }
                 } else if (buffer.length) {
+                    var wasPlaying = playing;
                     plugin.pause();
-                    loadMore();
+                    loadMore(index, wasPlaying);
                     return;
                 }
 
@@ -344,16 +345,16 @@
             }
         };
 
-        var loadMore = function(fromIdx) {
+        var loadMore = function(fromIdx, beginPlaying) {
             var loadFrom = fromIdx != undefined ? fromIdx : index;
             if (buffer.length) {
                 for(var i = loadFrom; (i < plugin.settings.pageSize + loadFrom && i < buffer.length); i++) {
-                    loadFrame(i);
+                    loadFrame(i, beginPlaying);
                 }
             }
         };
 
-        var loadFrame = function(i) {
+        var loadFrame = function(i, beginPlaying) {
             if (i < buffer.length) {
                 var img = buffer[i];
                 var $img = $(img);
@@ -363,6 +364,9 @@
                         plugin.frames[i] = img;
                         //buffer.splice(buffer.indexOf(img), 1);
                         drawProgress();
+                        if (beginPlaying && i == (index + pageSize - 1) && direction == 'forward' && playing == false) {
+                            plugin.play();
+                        }
                     }).prop('src', $img.data('src'));
                 }
             }
