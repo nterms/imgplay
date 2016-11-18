@@ -3,7 +3,8 @@
         var defaults = {
             name: 'imgplay',
             rate: 1,
-            controls: true
+            controls: true,
+            pageSize: 5
         };
 
         var plugin = this;
@@ -14,7 +15,6 @@
         var playing = false;
         var direction = 'forward';
         var page = 1;
-        var pageSize = 5;
         var total = 0;
         var index = 0;
         var buffer = [];
@@ -188,7 +188,12 @@
         plugin.toFrame = function(i) {
             i = i < 0 ? 0 : i;
 
-            if(i < buffer.length) {
+            if (i < buffer.length) {
+                index = i;
+                drawFrame();
+            }
+            else {
+                loadMore(i);
                 index = i;
                 drawFrame();
             }
@@ -321,7 +326,7 @@
                 if(playing) {
                     if(direction == 'forward') {
                         index++;
-                        if(index > plugin.frames.length -  pageSize / 2) {
+                        if(index > plugin.frames.length -  plugin.settings.pageSize / 2) {
                             loadMore();
                         }
                     } else {
@@ -335,9 +340,16 @@
             }
         };
 
-        var loadMore = function() {
-            if(buffer.length) {
-                for(var i = index; (i < pageSize + index && i < buffer.length); i++) {
+        var loadMore = function(fromIdx) {
+            if (fromIdx) {
+                buffer = [];
+                // we have jumpped forward, get a fresh buffer
+                for(var i = fromIdx; (i < plugin.settings.pageSize + fromIdx); i++) {
+                    loadFrame(i);
+                }
+            }
+            if (buffer.length) {
+                for(var i = index; (i < plugin.settings.pageSize + index && i < buffer.length); i++) {
                     loadFrame(i);
                 }
             }
@@ -353,7 +365,7 @@
                         plugin.frames[i] = img;
                         //buffer.splice(buffer.indexOf(img), 1);
                         drawProgress();
-                        if(i == (index + pageSize - 1) && direction == 'forward' && playing == false) {
+                        if(i == (index + plugin.settings.pageSize - 1) && direction == 'forward' && playing == false) {
                             plugin.play();
                         }
                     }).prop('src', $img.data('src'));
