@@ -364,7 +364,7 @@
                         plugin.frames[i] = img;
                         //buffer.splice(buffer.indexOf(img), 1);
                         drawProgress();
-                        if (beginPlaying && i == (index + pageSize - 1) && direction == 'forward' && playing == false) {
+                        if (beginPlaying && i == (index + plugin.settings.pageSize - 1) && direction == 'forward' && playing == false) {
                             plugin.play();
                         }
                     }).prop('src', $img.data('src'));
