@@ -21,7 +21,7 @@
         var playTimer = null;
 
         plugin.settings = {};
-        
+
         plugin.controls = {
             play: null,
             pause: null,
@@ -61,6 +61,14 @@
 
             $(window).resize(resize);
             resize();
+        };
+
+        plugin.isPlaying = function() {
+            return playing;
+        };
+
+        plugin.currentFrame = function() {
+            return index;
         };
 
         plugin.play = function() {
