@@ -341,7 +341,7 @@
         };
 
         var loadMore = function(fromIdx) {
-            if (fromIdx) {
+            if (fromIdx != undefined) {
                 buffer = [];
                 // we have jumpped forward, get a fresh buffer
                 for(var i = fromIdx; (i < plugin.settings.pageSize + fromIdx); i++) {
