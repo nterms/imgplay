@@ -19,21 +19,11 @@
         var index = 0;
         var buffer = [];
         var playTimer = null;
-        var frameWidth;
-        var frameHeight;
 
         plugin.settings = {};
 
         plugin.getTotalFrames = function() {
             return total;
-        };
-
-        plugin.getFrameWidth = function() {
-            return frameWidth;
-        };
-
-        plugin.getFrameHeight = function() {
-            return frameHeight;
         };
 
         plugin.controls = {
@@ -323,8 +313,6 @@
                             vw = cw;
                             vh = ih * (cw/iw);
                         }
-                        frameWidth = vw;
-                        frameHeight = vh;
                         screen.clearRect(0, 0, cw, ch);
                         screen.drawImage(img, (cw - vw) / 2, (ch - vh) / 2, vw, vh);
                     }
