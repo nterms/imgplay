@@ -67,7 +67,7 @@
             return playing;
         };
 
-        plugin.currentFrame = function() {
+        plugin.getCurrentFrame = function() {
             return index;
         };
 
