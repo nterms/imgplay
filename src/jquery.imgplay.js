@@ -195,11 +195,16 @@
             if (plugin.frames[i]) {
                 index = i;
                 drawFrame();
+                if (index > plugin.frames.length - plugin.settings.pageSize / 2) {
+                    loadMore();
+                }
+                return jQuery.Deferred().resolve();
             }
             else {
-                loadMore(i);
                 index = i;
-                drawFrame();
+                return loadMore(i).then(function() {
+                    drawFrame();
+                });
             }
         };
 
@@ -242,7 +247,7 @@
             if (!plugin.settings.controls) {
                 return;
             }
-            if($el.find('.imgplay-controls').length == 0) {
+            if ($el.find('.imgplay-controls').length == 0) {
                 var controls = $('<div class="imgplay-controls"></div>');
                 var progress = $('<div class="imgplay-progress">');
                 var buttons = $('<div class="imgplay-buttons">');
@@ -293,7 +298,7 @@
         };
 
         var drawFrame = function() {
-            if(screen != null) {
+            if (screen != null) {
                 var img = plugin.frames[index];
                 var $img = $(img);
 
@@ -346,20 +351,31 @@
         };
 
         var loadMore = function(fromIdx, beginPlaying) {
+            var deferred;
             var loadFrom = fromIdx != undefined ? fromIdx : index;
+            // load more but start a few frames back to make sure those a buffered
+            loadFrom -= plugin.settings.pageSize * 0.1;
+            if (loadFrom < 0)
+                loadFrom = 0;
             if (buffer.length) {
                 for(var i = loadFrom; (i < plugin.settings.pageSize + loadFrom && i < buffer.length); i++) {
-                    loadFrame(i, beginPlaying);
+                    var p = loadFrame(i, beginPlaying);
+                    if (i == fromIdx) {
+                        deferred = p; // return the promise of the frame they asked for
+                    }
                 }
             }
+            return deferred;
         };
 
         var loadFrame = function(i, beginPlaying) {
+            var deferred = jQuery.Deferred();
             if (i < buffer.length) {
                 var img = buffer[i];
                 var $img = $(img);
 
-                if($img.data('src')) {
+                if ($img.data('src')) {
+                    $img.prop('src', $img.data('src'));
                     $img.on('load', function() {
                         plugin.frames[i] = img;
                         //buffer.splice(buffer.indexOf(img), 1);
@@ -367,9 +383,11 @@
                         if (beginPlaying && i == (index + plugin.settings.pageSize - 1) && direction == 'forward' && playing == false) {
                             plugin.play();
                         }
-                    }).prop('src', $img.data('src'));
+                        deferred.resolve();
+                    });
                 }
             }
+            return deferred;
         };
 
         var drawProgress = function() {
