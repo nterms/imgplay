@@ -303,7 +303,7 @@
                 var $img = $(img);
 
                 if (img) {
-                    if($img.prop('naturalHeight') > 0) {
+                    if ($img.prop('naturalHeight') > 0) {
                         var cw = $canvas.width();
                         var ch = $canvas.height();
                         var iw = img.width;
@@ -407,6 +407,11 @@
         var resize = function() {
             $canvas.prop({height: $el.height(), width: $el.width()});
         };
+
+        plugin.fitCanvas = function() {
+            resize();
+        };
+
 
         plugin.init();
     };
