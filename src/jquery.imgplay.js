@@ -19,6 +19,7 @@
         var index = 0;
         var buffer = [];
         var playTimer = null;
+        var bufferLoading = [];
 
         plugin.settings = {};
 
@@ -201,8 +202,29 @@
                 return jQuery.Deferred().resolve();
             }
             else {
+                // tell caller we are loading their requested frame
+                if (plugin.settings.onLoading)
+                    plugin.settings.onLoading(true);
+
                 index = i;
-                return loadMore(i).then(function() {
+                // load more but start a few frames back to make sure those a buffered
+                loadFrom = i - plugin.settings.pageSize * 0.1;
+                if (loadFrom < 0)
+                    loadFrom = 0;
+
+                // skip our back load if we already have them
+                while (plugin.frames[loadFrom])
+                    loadFrom++;
+
+                return loadMore(loadFrom).then(function() {
+                    // we have loaded their requested frame
+                    if (plugin.settings.onLoading)
+                        plugin.settings.onLoading(false);
+
+                    // while loading we may have drawn/requested another frame
+                    if (index != i)
+                        return;
+
                     drawFrame();
                 });
             }
@@ -324,6 +346,10 @@
                 } else if (buffer.length) {
                     var wasPlaying = playing;
                     plugin.pause();
+
+                    if (wasPlaying && plugin.settings.onLoading)
+                        plugin.settings.onLoading(true);
+
                     loadMore(index, wasPlaying);
                     return;
                 }
@@ -353,10 +379,6 @@
         var loadMore = function(fromIdx, beginPlaying) {
             var deferred;
             var loadFrom = fromIdx != undefined ? fromIdx : index;
-            // load more but start a few frames back to make sure those a buffered
-            loadFrom -= plugin.settings.pageSize * 0.1;
-            if (loadFrom < 0)
-                loadFrom = 0;
             if (buffer.length) {
                 for(var i = loadFrom; (i < plugin.settings.pageSize + loadFrom && i < buffer.length); i++) {
                     var p = loadFrame(i, beginPlaying);
@@ -369,7 +391,13 @@
         };
 
         var loadFrame = function(i, beginPlaying) {
+            // are we already loading this frame?
+            if (bufferLoading[i])
+                return bufferLoading[i];
+
             var deferred = jQuery.Deferred();
+            bufferLoading[i] = deferred;
+
             if (i < buffer.length) {
                 var img = buffer[i];
                 var $img = $(img);
@@ -380,9 +408,13 @@
                         plugin.frames[i] = img;
                         //buffer.splice(buffer.indexOf(img), 1);
                         drawProgress();
-                        if (beginPlaying && i == (index + plugin.settings.pageSize - 1) && direction == 'forward' && playing == false) {
+                        if (beginPlaying && i == (index + (plugin.settings.pageSize / 2)) && playing == false) {
+                            if (plugin.settings.onLoading)
+                                plugin.settings.onLoading(false);
+
                             plugin.play();
                         }
+                        delete bufferLoading[i];
                         deferred.resolve();
                     });
                 }
@@ -406,6 +438,7 @@
 
         var resize = function() {
             $canvas.prop({height: $el.height(), width: $el.width()});
+            drawFrame();
         };
 
         plugin.fitCanvas = function() {
