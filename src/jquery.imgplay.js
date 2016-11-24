@@ -343,7 +343,7 @@
                         screen.clearRect(0, 0, cw, ch);
                         screen.drawImage(img, (cw - vw) / 2, (ch - vh) / 2, vw, vh);
                     }
-                } else if (buffer.length) {
+                } else if (buffer.length && index < total) {
                     var wasPlaying = playing;
                     plugin.pause();
 
